@@ -1,0 +1,122 @@
+{
+  "$schema": "https://github.com/orgito1015/MCPConf4EnterpriseEnv-Researching-process/schemas/registry-entry-v1.json",
+  "_comment": "MCP Server Registry Entry Template — fill in all fields before submitting for approval",
+
+  "server": {
+    "id": "mcp-server-<unique-identifier>",
+    "version": "1.0.0",
+    "name": "<Human-readable server name>",
+    "description": "<What this server does and what business need it serves>",
+    "environment": "<development | staging | production>",
+    "transport": "<stdio | sse>",
+    "endpoint": "<URL for SSE transport, or null for stdio>",
+    "image": {
+      "registry": "<container-registry>/<image-name>",
+      "tag": "<version-tag>",
+      "digest": "<sha256:... — required for production>",
+      "signed": false
+    }
+  },
+
+  "ownership": {
+    "owner_name": "<Full name of designated server owner>",
+    "owner_email": "<owner@company.com>",
+    "business_unit": "<Business unit or team>",
+    "cost_center": "<Cost center code>"
+  },
+
+  "approval": {
+    "status": "<pending | approved | suspended | revoked>",
+    "approved_date": null,
+    "approved_by": {
+      "it_security": null,
+      "data_privacy_officer": null,
+      "business_unit_owner": null
+    },
+    "approval_ticket": "<JIRA/ServiceNow ticket reference>",
+    "next_review_date": null,
+    "review_cadence_months": 12
+  },
+
+  "security": {
+    "data_classification": "<public | internal | confidential | restricted>",
+    "phi_access": false,
+    "pii_access": false,
+    "financial_data_access": false,
+    "pci_in_scope": false,
+    "tool_schema_hash": "<sha256 hash of the tool schema JSON at deployment>",
+    "credential_vault": "<HashiCorp Vault | AWS Secrets Manager | Azure Key Vault | other>",
+    "service_account_id": "<Unique service account — must not be shared with other servers>",
+    "mtls_cert_fingerprint": null
+  },
+
+  "tools": [
+    {
+      "name": "<tool_name>",
+      "description": "<What this tool does>",
+      "backend_system": "<Database/API/service this tool calls>",
+      "operations": ["<read | write | delete — list all>"],
+      "max_permission_scope": "<Minimum necessary permissions for this tool>",
+      "data_types_accessible": ["<List data types>"],
+      "approved": false,
+      "approved_by": null,
+      "schema_hash": "<sha256 of tool JSON Schema>"
+    }
+  ],
+
+  "policy_bindings": {
+    "allowed_roles": ["<role1>", "<role2>"],
+    "global_denylist_exempt": false,
+    "rate_limit_per_user_per_minute": 100,
+    "requires_human_confirmation_for": ["<list tool names requiring human approval>"],
+    "environment_binding": "<development | staging | production>",
+    "time_restrictions": {
+      "enabled": false,
+      "permitted_hours_utc": "00:00-23:59",
+      "permitted_days": ["MON","TUE","WED","THU","FRI","SAT","SUN"]
+    }
+  },
+
+  "network": {
+    "namespace": "<kubernetes-namespace or network segment>",
+    "egress_proxy_required": true,
+    "allowed_egress_destinations": ["<List of approved external endpoints>"],
+    "allowed_ingress_from": ["<gateway | list of approved source identifiers>"]
+  },
+
+  "audit": {
+    "log_destination": "<SIEM endpoint or topic>",
+    "log_format": "JSON",
+    "log_schema_version": "1.0",
+    "retention_days": 365,
+    "phi_tagging_enabled": false,
+    "pii_redaction_enabled": true
+  },
+
+  "deployment": {
+    "pipeline_id": "<CI/CD pipeline identifier>",
+    "deployed_at": null,
+    "deployed_by": "<deployment service account>",
+    "config_baseline_hash": "<sha256 of deployed config — used for drift detection>",
+    "rollback_procedure_doc": "<URL to rollback runbook>",
+    "rollback_time_sla_minutes": 15,
+    "drift_detection_enabled": true,
+    "drift_check_interval_minutes": 15,
+    "drift_alert_recipients": ["<security-team@company.com>"]
+  },
+
+  "lifecycle": {
+    "created_at": "<ISO 8601 timestamp>",
+    "last_modified": "<ISO 8601 timestamp>",
+    "last_security_review": null,
+    "decommission_date": null,
+    "changelog": [
+      {
+        "date": "<ISO 8601>",
+        "author": "<name>",
+        "change": "<Description of change>",
+        "ticket": "<ticket reference>"
+      }
+    ]
+  }
+}
